@@ -3,29 +3,26 @@ project(HASHTAROTH_TEST)
 
 set(CMAKE_CXX_STANDARD 17)
 
-# Find OpenSSL (if installed)
-find_package(OpenSSL REQUIRED)
-
 set(HASHTAROTH_ROOT_DIR "${CMAKE_CURRENT_SOURCE_DIR}/..")
 
-# Define sources directory
-set(HASHTAROTH_SRC_DIR "${HASHTAROTH_ROOT_DIR}/src")
+add_subdirectory(${HASHTAROTH_ROOT_DIR} ${CMAKE_CURRENT_BINARY_DIR}/deps/hashtaroth)
 
-# set(SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR})
-
-set(HDR_DIR "${HASHTAROTH_ROOT_DIR}/includes")
-
-# Definde private headers directory
-set(PRIV_HDR_DIR ${HASHTAROTH_SRC_DIR}/internal)
-
-# Define sources
-set(SOURCES ${HASHTAROTH_SRC_DIR}/hash_data.cpp)
-
+set(SOURCES main.cpp)
 add_executable(${PROJECT_NAME} ${SOURCES})
 
-# target_compile_options(${PROJECT_NAME} PRIVATE -DHASHTAROTH_EXPORT)
+include(FetchContent)
+FetchContent_Declare(
+  googletest
+  URL https://github.com/google/googletest/archive/03597a01ee50ed33e9dfd640b249b4be3799d395.zip
+)
+# For Windows: Prevent overriding the parent project's compiler/linker settings
+set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+FetchContent_MakeAvailable(googletest)
 
-target_include_directories(${PROJECT_NAME} PRIVATE ${PRIV_HDR_DIR} 
-                                           PRIVATE ${HDR_DIR})
+enable_testing()
 
-target_link_libraries(${PROJECT_NAME} PRIVATE OpenSSL::Crypto)
+include(GoogleTest)
+
+target_link_libraries(${PROJECT_NAME} HASHTAROTH GTest::gtest_main)
+
+gtest_discover_tests(HASHTAROTH_TEST)
