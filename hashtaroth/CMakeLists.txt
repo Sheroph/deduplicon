@@ -14,16 +14,19 @@ set(PRIV_HDR_DIR ${SRC_DIR}/internal)
 
 # Define sources
 set(SOURCES
-    ${SRC_DIR}/hash_extractor.cpp
     ${SRC_DIR}/hash_data.cpp
+    ${SRC_DIR}/hashtaroth.cpp
+    ${SRC_DIR}/hashtaroth_api.cpp
 )
 
-add_library(HASHTAROTH SHARED ${SOURCES})
 
-target_include_directories(HASHTAROTH
+add_library(${PROJECT_NAME} SHARED ${SOURCES})
+
+target_compile_options(${PROJECT_NAME} PRIVATE -DHASHTAROTH_EXPORT)
+
+target_include_directories(${PROJECT_NAME}
     PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/includes
     PRIVATE ${PRIV_HDR_DIR}
 )
 
-# target_link_libraries(HASHTAROTH PRIVATE OpenSSL::SSL)
-target_link_libraries(HASHTAROTH PRIVATE OpenSSL::Crypto)
+target_link_libraries(${PROJECT_NAME} PRIVATE OpenSSL::Crypto)

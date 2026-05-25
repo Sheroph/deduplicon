@@ -1,11 +1,10 @@
 #ifndef HASH_EXTRACTOR_HPP
 #define HASH_EXTRACTOR_HPP
 
-#include <hashtaroth.h>
+#include <hashtaroth_api.h>
 #include <hash_data.hpp>
 
 #include <list>
-#include <map>
 #include <thread>
 #include <filesystem>
 #include <condition_variable>

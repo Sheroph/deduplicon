@@ -1,16 +1,9 @@
-
-#include <hash_extactor.hpp>
-
-#include <openssl/sha.h>
+#include <hashtaroth.hpp>
 
 #include <fstream>
-#include <iostream>
-#include <iomanip>
-#include <sstream>
-#include <memory>
 
 using namespace std;
-using namespace filesystem;
+using namespace std::filesystem;
 
 namespace hashtaroth
 {
@@ -103,52 +96,3 @@ namespace hashtaroth
         EVP_DigestFinal_ex(openssl_ctx, hash_data.get_hash(), NULL);
     }
 } // namespace hashtaroth
-
-
-
-void initialize()
-{
-    hashtaroth::hashtaroth = make_unique<hashtaroth::Hashtaroth>();
-}
-
-void destroy()
-{
-    hashtaroth::hashtaroth.reset();
-}
-
-hash_id_type submit_file(const char* file_path, const hashtaroth_callback callback)
-{
-    const path file(file_path);
-    return hashtaroth::hashtaroth->hash_this(file, callback);
-}
-
-// std::string sha256_file(const std::string& filename) {
-//     unsigned char hash[EVP_MAX_MD_SIZE];
-//     SHA256_CTX sha256;
-//     SHA256_Init(&sha256);
-
-//     std::ifstream file(filename, std::ios::binary);
-//     if (!file) throw std::runtime_error("Unable to open file: " + filename);
-
-//     char buffer[4096];
-//     while (file.read(buffer, sizeof(buffer)))
-//         SHA256_Update(&sha256, buffer, file.gcount());
-//     if (file.gcount() > 0)
-//         SHA256_Update(&sha256, buffer, file.gcount());
-
-//     SHA256_Final(hash, &sha256);
-
-//     std::ostringstream result;
-//     for (int i = 0; i < EVP_MAX_MD_SIZE; ++i)
-//         result << std::hex << std::setw(2) << std::setfill('0') << (int)hash[i];
-//     return result.str();
-// }
-
-// int main() {
-//     try {
-//         std::string hash = sha256_file("fichier.txt");
-//         std::cout << "SHA256: " << hash << std::endl;
-//     } catch (const std::exception& e) {
-//         std::cerr << "Erreur: " << e.what() << std::endl;
-//     }
-// }
