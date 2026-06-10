@@ -1,19 +1,30 @@
 #ifndef HASH_JOB_HEADER
 #define HASH_JOB_HEADER
 
+#include <hash_response.hpp>
+
 #include <filesystem>
-#include <openssl/evp.h>
+#include <functional>
 
 namespace hashtaroth {
 
-struct hash_job_response_t {
-  unsigned char digest[EVP_MAX_MD_SIZE];
+
+class hash_job_t
+{
+  public:
+
+    hash_job_t();
+    hash_job_t(const std::filesystem::path file_path);
+
+    std::filesystem::path get_file_path() const ;
+
+    void set_file_path(const std::filesystem::path& file_path);
+
+    
+  protected:
+    std::filesystem::path file_path_;
 };
 
-struct hash_job_t {
-  hash_job_response_t response;
-  std::filesystem::path file_path;
-};
 
 } // namespace hashtaroth
 #endif // HASH_JOB_HEADER

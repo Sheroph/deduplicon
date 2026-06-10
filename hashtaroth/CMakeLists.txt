@@ -10,7 +10,9 @@ find_package(OpenSSL REQUIRED)
 set(SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 
 # Define sources
-set(SOURCES ${SRC_DIR}/hashtaroth.cpp)
+set(SOURCES ${SRC_DIR}/hashtaroth.cpp
+            ${SRC_DIR}/hash_response.cpp
+            ${SRC_DIR}/hash_job.cpp)
 
 add_library(${PROJECT_NAME} SHARED ${SOURCES})
 
