@@ -1,6 +1,7 @@
 #include <daemonarch.hpp>
 
 #include <daemonarch_listener_mock.hpp>
+#include <file_modifier.hpp>
 
 #include <gtest/gtest.h>
 
@@ -16,43 +17,35 @@ constexpr char fake_data[]{"This is a test file."};
 const size_t fake_data_size{strlen(fake_data)};
 
 using namespace daemonarch::test::mock;
+using namespace daemonarch::test::tools;
 
 class DaemonArchTest : public testing::Test
 {
   public:
     void SetUp() override;
 
-    future<void> write_in_temp_file(const ios::openmode& open_mode)
-    {
-      return async([&] ()
-      {
-        this_thread::sleep_for(chrono::milliseconds(50));
-        ofstream stream(temp_file, open_mode);
-        stream.close(); 
-      });
-    }
 
   protected:
     unique_ptr<DaemonArch> instance;
-    unique_ptr<DaemonArchListener> listener_mock;
+    unique_ptr<DaemonArchListenerMock> listener_mock;
+    unique_ptr<FileModifier> file_handler_;
     path temp_file;
 };
 
 
 void DaemonArchTest::SetUp() {
-  
+
   if(exists(temp_file))
   {
     std::filesystem::remove(temp_file);
   }
-  
+
   temp_file = temp_directory_path() / fake_file_name;
-  ofstream stream(temp_file, ios::out | ios::trunc | ios::binary);
-  stream.write(fake_data, fake_data_size);
-  stream.close();
-  
+  file_handler_ = make_unique<FileModifier>(temp_file);
+  file_handler_->write_bytes(fake_data, fake_data_size, ios::trunc);
+
   instance = make_unique<DaemonArch>();
-  
+
   listener_mock = make_unique<DaemonArchListenerMock>();
 }
 
@@ -73,27 +66,16 @@ TEST_F(DaemonArchTest, add_watch)
 }
 
 
-TEST_F(DaemonArchTest, modified_notif)
+TEST_F(DaemonArchTest, modified_notif_open_close)
 {
-  
-  promise<bool> on_event_called_promise;
-  future<bool> on_event_called_future{on_event_called_promise.get_future()};
+  ASSERT_TRUE(instance->watch(temp_file, *listener_mock) && instance->start());
 
-  const on_event_callback_t callback{[&](const daemon_arch_event_t& evt) {
-    on_event_called_promise.set_value(true);
-  }};
+  future wait_call{listener_mock->wait_for_on_event_call_count(1)};
 
-  dynamic_cast<DaemonArchListenerMock*>(listener_mock.get())->set_on_event_callback(callback);
+  file_handler_->open_close();
 
-  ASSERT_TRUE(instance->watch(temp_file, *listener_mock));
+  future_status status{wait_call.wait_for(200ms)};
+  ASSERT_EQ(future_status::ready, status);
 
-  ASSERT_TRUE(instance->start());
-
-  future write{write_in_temp_file(ios::app)};
-
-  const future_status status{on_event_called_future.wait_for(chrono::milliseconds(1000))};
-
-  write.get();
-  ASSERT_TRUE(status == future_status::ready);
-  ASSERT_TRUE(on_event_called_future.get());
+  ASSERT_EQ(1, listener_mock->get_on_event_called_count());
 }

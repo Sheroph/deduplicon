@@ -9,24 +9,28 @@ using namespace std;
 namespace daemonarch::test::mock
 {
 
-  DaemonArchListenerMock::DaemonArchListenerMock(): DaemonArchListener() {}
-  DaemonArchListenerMock::DaemonArchListenerMock(const on_event_callback_t& callback): DaemonArchListener(), callback_(callback) {}
-  DaemonArchListenerMock::~DaemonArchListenerMock() {};
-
-
-  void DaemonArchListenerMock::set_on_event_callback(const on_event_callback_t& callback) {
-    callback_ = callback;
+  DaemonArchListenerMock::DaemonArchListenerMock(): DaemonArchListener() {
+    on_event_call_count_ = 0;
+    expected_on_event_call_count_set_ = false;
+    expected_on_event_call_count_ = 0;
   }
 
   void DaemonArchListenerMock::on_event(const daemon_arch_event_t& evt) {
-    if(callback_) {
-      callback_(evt);
-      return;
+    ++on_event_call_count_;
+    if(expected_on_event_call_count_set_ && on_event_call_count_ >= expected_on_event_call_count_) {
+      wait_for_on_event_call_count_pro_.set_value();
     }
-    cout << "on_event called" << endl;
+  }
+
+  size_t DaemonArchListenerMock::get_on_event_called_count() const {
+    return on_event_call_count_;
   }
 
 
-
+  future<void> DaemonArchListenerMock::wait_for_on_event_call_count(const size_t nb_calls) {
+    expected_on_event_call_count_ = nb_calls;
+    expected_on_event_call_count_set_ = true;
+    return wait_for_on_event_call_count_pro_.get_future();
+  }
 
 } // namespace daemonarch::test::mock

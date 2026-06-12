@@ -4,6 +4,7 @@
 #include <daemonarch_listener.hpp>
 
 #include <functional>
+#include <future>
 
 namespace daemonarch
 {
@@ -12,25 +13,26 @@ namespace daemonarch
 
 
 namespace daemonarch::test::mock
-{ 
-
-  typedef std::function<void (const daemon_arch_event_t&)> on_event_callback_t ;
+{
 
   class DaemonArchListenerMock : public DaemonArchListener
   {
-    
+
     public:
     DaemonArchListenerMock();
-    DaemonArchListenerMock(const on_event_callback_t&);
-    ~DaemonArchListenerMock();
 
-    void set_on_event_callback(const on_event_callback_t&);
-    
     void on_event(const daemon_arch_event_t&) override;
 
+    size_t get_on_event_called_count() const;
+
+    std::future<void> wait_for_on_event_call_count(const size_t);
+
     protected:
-      on_event_callback_t callback_;
+      size_t on_event_call_count_;
+      std::promise<void> wait_for_on_event_call_count_pro_;
+      size_t expected_on_event_call_count_;
+      bool expected_on_event_call_count_set_;
   };
-  
+
 } // namespace daemonarch::test::mock
 #endif // DEAMONARCH_LISTENER_MOCK_HPP

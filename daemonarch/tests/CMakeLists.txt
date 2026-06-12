@@ -8,13 +8,15 @@ set(DAEMONARCH_ROOT_DIR "${CMAKE_CURRENT_SOURCE_DIR}/..")
 add_subdirectory(${DAEMONARCH_ROOT_DIR} ${CMAKE_CURRENT_BINARY_DIR}/deps/daemonarch)
 
 set(MOCK_DIR ${CMAKE_CURRENT_SOURCE_DIR}/mocks)
+set(TOOLS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/tools)
 
 set(SOURCES main.cpp
-            ${MOCK_DIR}/daemonarch_listener_mock.cpp)
+            ${MOCK_DIR}/daemonarch_listener_mock.cpp
+            ${TOOLS_DIR}/file_modifier.cpp)
 
 add_executable(${PROJECT_NAME} ${SOURCES})
 
-target_include_directories(${PROJECT_NAME} PRIVATE ${MOCK_DIR})
+target_include_directories(${PROJECT_NAME} PRIVATE ${MOCK_DIR} ${TOOLS_DIR})
 
 include(FetchContent)
 FetchContent_Declare(
