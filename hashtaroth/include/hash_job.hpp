@@ -1,5 +1,5 @@
-#ifndef HASH_JOB_HEADER
-#define HASH_JOB_HEADER
+#ifndef HASH_JOB_HPP
+#define HASH_JOB_HPP
 
 #include <hash_response.hpp>
 
@@ -27,4 +27,4 @@ class hash_job_t
 
 
 } // namespace hashtaroth
-#endif // HASH_JOB_HEADER
+#endif // HASH_JOB_HPP
