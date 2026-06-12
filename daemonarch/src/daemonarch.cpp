@@ -1,6 +1,8 @@
 #include <daemonarch.hpp>
 
 #include <daemonarch_listener.hpp>
+#include <daemonarch_event.hpp>
+#include <event_translate_tools.hpp>
 
 #include <sys/inotify.h>
 #include <unistd.h>
@@ -31,7 +33,7 @@ ostream &operator<<(ostream &out, const inotify_event &evt)
 
 namespace daemonarch
 {
-  
+
   DaemonArch::DaemonArch() {
     listener_running_ = false;
     inotify_fd_ = -1;
@@ -67,7 +69,7 @@ namespace daemonarch
                       IN_CREATE |
                       IN_DELETE |
                       IN_DELETE_SELF |
-                      IN_MODIFY | 
+                      IN_MODIFY |
                       IN_MOVE_SELF |
                       IN_MOVE;
 
@@ -102,15 +104,15 @@ namespace daemonarch
     return true;
   }
 
-  
+
   bool DaemonArch::inotify_initialized() const
   {
     return inotify_fd_ != -1;
   }
-  
+
   bool DaemonArch::init_inotify()
   {
-    if(inotify_initialized()) 
+    if(inotify_initialized())
     {
       return true;
     }
@@ -121,11 +123,11 @@ namespace daemonarch
     }
     return inotify_initialized();
   }
-  
+
   void DaemonArch::run()
   {
     listener_running_ = true;
-    inotify_event event;
+    struct inotify_event os_event;
 
     pollfd pfd;
     pfd.fd = inotify_fd_;
@@ -142,9 +144,9 @@ namespace daemonarch
         continue;
       }
       ssize_t bytes_read{0};
-      while (bytes_read < sizeof(event))
+      while (bytes_read < sizeof(os_event))
       {
-        const ssize_t last_bytes_read{read(inotify_fd_, &event, sizeof(event))};
+        const ssize_t last_bytes_read{read(inotify_fd_, &os_event, sizeof(os_event))};
         if(last_bytes_read < 0){
           cerr << "Failure while reading inotify event. Start a new event read." << endl;
           bytes_read = 0;
@@ -157,9 +159,12 @@ namespace daemonarch
       }
       if(bytes_read > 0)
       {
-        cout << event << endl;
-        struct daemon_arch_event_t dummy_evt;
-        listeners_.at(event.wd).on_event(dummy_evt);
+        cout << os_event << endl;
+        daemon_arch_event_t event;
+
+        translate(os_event, event);
+
+        listeners_.at(os_event.wd).on_event(event);
       }
     }
   }

@@ -5,6 +5,12 @@
 
 #include <functional>
 
+namespace daemonarch
+{
+  struct daemon_arch_event_t;
+} // namespace daemonarch
+
+
 namespace daemonarch::test::mock
 { 
 

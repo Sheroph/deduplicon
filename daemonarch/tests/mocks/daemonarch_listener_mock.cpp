@@ -1,4 +1,7 @@
 #include <daemonarch_listener_mock.hpp>
+
+#include <daemonarch_listener.hpp>
+
 #include <iostream>
 
 using namespace std;
