@@ -19,6 +19,21 @@ namespace daemonarch::test::tools
     stream.close();
   }
 
+  bool FileModifier::remove() {
+    const bool remove_status{filesystem::remove(file_)};
+    if(remove_status)
+    {
+      file_ = "";
+    }
+    return remove_status;
+  }
+
+  void FileModifier::rename(const string& new_name) {
+    const path root{file_.parent_path()};
+    const path new_path{root / new_name};
+    filesystem::rename(file_, new_path);
+    file_ = new_path;
+  }
 
 
 } // namespace daemonarch::test::tools

@@ -98,7 +98,7 @@ namespace daemonarch
 
     inotify_listener_ = std::move(thread(&DaemonArch::run, this));
     do{
-      this_thread::sleep_for(chrono::milliseconds(20));
+      this_thread::sleep_for(chrono::milliseconds(10));
     }
     while(!listener_running_);
     return true;
@@ -135,7 +135,7 @@ namespace daemonarch
 
     while(listener_running_)
     {
-      const int poll_out{poll(&pfd, 1, 200)};
+      const int poll_out{poll(&pfd, 1, 100)};
       if(poll_out <= 0 || (pfd.revents & POLLNVAL))
       {
         if((pfd.revents & POLLNVAL) && listener_running_){
@@ -159,12 +159,12 @@ namespace daemonarch
       }
       if(bytes_read > 0)
       {
-        cout << os_event << endl;
         daemon_arch_event_t event;
+        if(translate(os_event, event.event_type)) {
+          event.path = watched_path_.at(os_event.wd);
+          listeners_.at(os_event.wd).on_event(event);
+        }
 
-        translate(os_event, event);
-
-        listeners_.at(os_event.wd).on_event(event);
       }
     }
   }

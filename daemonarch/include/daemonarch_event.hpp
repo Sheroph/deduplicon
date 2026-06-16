@@ -8,6 +8,7 @@ namespace daemonarch
 
   enum daemon_arch_event_type_t
   {
+    CLOSED,
     MODIFY,
     DELETE,
     CREATE,
