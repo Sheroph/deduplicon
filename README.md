@@ -65,4 +65,4 @@ One goal is to provide a way to use clang on each platform.
 - Linux version under development
 
 ### Beelzebase
-- Not stated yet
+- Linux version under development

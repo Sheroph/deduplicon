@@ -1,43 +1,49 @@
-#include <beelzebase.hpp>
+
 #include <sqlite/sqlite_api.hpp>
 
 #include <gtest/gtest.h>
 
 #include <memory>
 #include <filesystem>
-#include <fstream>
-#include <algorithm>
 
 using namespace beelzebase;
 using namespace std;
 using namespace std::filesystem;
 
-class BeelzebaseTest : public testing::Test
+class SqliteApiTest : public testing::Test
 {
   public:
     void SetUp() override;
     void TearDown() override;
 
   protected:
-    unique_ptr<Beelzebase> instance;
     path db_file;
+    unique_ptr<ISQLApi> instance;
 };
 
-void BeelzebaseTest::TearDown() {
+void SqliteApiTest::TearDown() {
   instance = nullptr;
   remove(db_file);
 }
-
-void BeelzebaseTest::SetUp() {
+void SqliteApiTest::SetUp() {
 
   remove(db_file);
 
   db_file = temp_directory_path() / "beelzebase.db";
-  unique_ptr<ISQLApi> api{make_unique<SqliteAPI>(db_file)};
-  instance = make_unique<Beelzebase>(api);
+  instance = make_unique<SqliteAPI>(db_file);
 }
 
-TEST_F(BeelzebaseTest, ctor_dtor)
+TEST_F(SqliteApiTest, ctor_dtor)
 {
   instance = nullptr;
+}
+
+TEST_F(SqliteApiTest, init_db) {
+  ASSERT_TRUE(instance->init_db());
+}
+
+
+TEST_F(SqliteApiTest, update_db) {
+  instance->init_db();
+  ASSERT_TRUE(instance->update_db());
 }

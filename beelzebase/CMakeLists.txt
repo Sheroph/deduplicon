@@ -10,7 +10,9 @@ set(SQLITE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/third_party/sqlite)
 
 # Define sources
 set(SOURCES ${SRC_DIR}/beelzebase.cpp
-            ${SRC_DIR}/sqlite_api.cpp
+            ${SRC_DIR}/sqlite/sqlite_api.cpp
+            ${SRC_DIR}/sqlite/sqlite_bind_impl.cpp
+            ${SRC_DIR}/records/monitored_fs_record.cpp
             ${SQLITE_DIR}/sqlite3.c)
 
 
@@ -18,5 +20,5 @@ add_library(${PROJECT_NAME} SHARED ${SOURCES})
 
 target_include_directories(${PROJECT_NAME}
     PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include
-    PRIVATE ${SQLITE_DIR}
+    PUBLIC ${SQLITE_DIR}
 )

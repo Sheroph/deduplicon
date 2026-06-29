@@ -7,7 +7,9 @@ set(BEELZEBASE_ROOT_DIR "${CMAKE_CURRENT_SOURCE_DIR}/..")
 
 add_subdirectory(${BEELZEBASE_ROOT_DIR} ${CMAKE_CURRENT_BINARY_DIR}/deps/beelzebase)
 
-set(SOURCES main.cpp)
+set(SOURCES main.cpp
+            sqlite_api_test.cpp
+            monitored_fs_record_test.cpp)
 add_executable(${PROJECT_NAME} ${SOURCES})
 
 include(FetchContent)
