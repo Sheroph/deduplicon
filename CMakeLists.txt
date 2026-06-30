@@ -6,7 +6,6 @@ set(BUILD_SHARED_LIBS ON)
 
 # Make sure to don't forget deamons (they are a bit susceptible)
 add_subdirectory(hashtaroth)
-# add_subdirectory(beelzebase)
+add_subdirectory(beelzebase)
 add_subdirectory(daemonarch)
-
-# add_subdirectory(main)
+# add_subdirectory(deduplicon)

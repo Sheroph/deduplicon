@@ -62,7 +62,7 @@ One goal is to provide a way to use clang on each platform.
 - Implement multi-thread hashes processing
 
 ### Daemonarch
-- Linux version under development
+- Basic filesystem watcher on Linux is running
 
 ### Beelzebase
-- Linux version under development
+- Basic monitored filesystem entries stored on database throught sqlite3 on Linux
