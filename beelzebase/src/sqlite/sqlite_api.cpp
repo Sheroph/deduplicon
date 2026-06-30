@@ -22,7 +22,7 @@ namespace beelzebase
       cerr << msg << endl;
       throw runtime_error(msg);
     }
-    const path install_path_(root_dir);
+    install_path_ = root_dir;
     if (!(is_directory(install_path_) && exists(install_path_)))
     {
       const string msg{"BEELZEBASE_ROOT doesn't point to valid directory."};
@@ -64,8 +64,13 @@ namespace beelzebase
       return false;
     }
 
-    ifstream sql_file_stream(install_path_ / "sql" / "database_v1.0.sql");
-    stringstream sql_stream;
+    const path sql_script_path{install_path_ / "sql" / "database_v1.0.sql"};
+    if(!exists(sql_script_path) || !is_regular_file(sql_script_path)) {
+      cerr << "sql script file " << sql_script_path << " doesn't exist or is not a file" << endl;
+      return false;
+    }
+    ifstream sql_file_stream(sql_script_path);
+    ostringstream sql_stream;
     sql_stream << sql_file_stream.rdbuf();
 
     char *sql_error{nullptr};
@@ -90,20 +95,50 @@ namespace beelzebase
   bool SqliteAPI::add_monitored_entry(const MonitoredFSRecord &record)
   {
     sqlite3_stmt *stmt{nullptr};
-    if (!bind_sqlite3_param(&stmt, db_, record))
+    if (!prepare_insert(&stmt, db_, record))
     {
-      cerr << "Failed to bind request values" << endl;
       return false;
     }
 
     if(sqlite3_step(stmt) != SQLITE_DONE) {
-      cerr << "Failed to execute statment with error : " << sqlite3_errmsg(db_) << endl;
+      cerr << "Failed to execute insert statment with error :\n\t" << sqlite3_errmsg(db_) << endl;
       return false;
     }
+    sqlite3_reset(stmt);
     return true;
   }
 
+  bool SqliteAPI::update_monitored_entry(const string& previous_file_path, const MonitoredFSRecord& record) {
+    sqlite3_stmt *stmt{nullptr};
 
-  extern template bool bind_sqlite3_param(sqlite3_stmt **, sqlite3 *, const MonitoredFSRecord &);
+    if(!prepare_update(&stmt, db_, previous_file_path, record)) {
+      return false;
+    }
+
+    if(sqlite3_step(stmt) != SQLITE_DONE) {
+      cerr << "Failed to execute update statment with error :\n\t" << sqlite3_errmsg(db_) << endl;
+      return false;
+    }
+    sqlite3_reset(stmt);
+    return true;
+  }
+
+  bool SqliteAPI::delete_monitored_entry(const string& file_path) {
+    sqlite3_stmt *stmt{nullptr};
+
+    if(!prepare_delete(&stmt, db_, file_path)) {
+      return false;
+    }
+    if(sqlite3_step(stmt) != SQLITE_DONE) {
+      cerr << "Failed to execute delete statment with error :\n\t" << sqlite3_errmsg(db_) << endl;
+      return false;
+    }
+    sqlite3_reset(stmt);
+    return true;
+  }
+
+  extern bool prepare_delete(sqlite3_stmt**, sqlite3*, const std::string&);
+  extern template bool prepare_insert(sqlite3_stmt **, sqlite3 *, const MonitoredFSRecord &);
+  extern template bool prepare_update(sqlite3_stmt **, sqlite3 *, const string &, const MonitoredFSRecord &);
 
 } // namespace beelzebase
