@@ -34,7 +34,7 @@ void BeelzebaseTest::SetUp() {
 
   db_file = temp_directory_path() / "beelzebase.db";
   unique_ptr<ISQLApi> api{make_unique<SqliteAPI>(db_file)};
-  instance = make_unique<Beelzebase>(api);
+  instance = make_unique<Beelzebase>(std::move(api));
 }
 
 TEST_F(BeelzebaseTest, ctor_dtor)

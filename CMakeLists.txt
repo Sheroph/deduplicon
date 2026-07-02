@@ -8,4 +8,11 @@ set(BUILD_SHARED_LIBS ON)
 add_subdirectory(hashtaroth)
 add_subdirectory(beelzebase)
 add_subdirectory(daemonarch)
-# add_subdirectory(deduplicon)
+
+set(SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
+set(INC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include)
+
+add_executable(${PROJECT_NAME} ${SRC_DIR}/main.cpp)
+
+target_link_libraries(${PROJECT_NAME} PRIVATE HASHTAROTH BEELZEBASE DAEMONARCH)
+target_include_directories(${PROJECT_NAME} PRIVATE HASHTAROTH BEELZEBASE DAEMONARCH PUBLIC ${INC_DIR})

@@ -10,7 +10,7 @@ namespace beelzebase
   class Beelzebase
   {
     public:
-      Beelzebase(std::unique_ptr<ISQLApi>&);
+      Beelzebase(std::unique_ptr<ISQLApi>);
       ~Beelzebase();
 
     private:
