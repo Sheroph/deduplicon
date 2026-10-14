@@ -1,5 +1,5 @@
-#ifndef DEAMONARCH_LISTENER_MOCK_HPP
-#define DEAMONARCH_LISTENER_MOCK_HPP
+#ifndef DAEMONARCH_LISTENER_MOCK_HPP
+#define DAEMONARCH_LISTENER_MOCK_HPP
 
 #include <daemonarch_listener.hpp>
 #include <daemonarch_event.hpp>
@@ -35,4 +35,4 @@ namespace daemonarch::test::mock
   };
 
 } // namespace daemonarch::test::mock
-#endif // DEAMONARCH_LISTENER_MOCK_HPP
+#endif // DAEMONARCH_LISTENER_MOCK_HPP

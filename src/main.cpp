@@ -1,6 +1,7 @@
 #include <hashtaroth.hpp>
 #include <daemonarch.hpp>
 #include <beelzebase.hpp>
+#include <deduplicon_listener.hpp>
 
 #include <sqlite/sqlite_api.hpp>
 
@@ -11,6 +12,7 @@
 using namespace hashtaroth;
 using namespace daemonarch;
 using namespace beelzebase;
+using namespace deduplicon;
 
 using namespace std;
 using namespace std::filesystem;
@@ -18,6 +20,9 @@ using namespace std::filesystem;
 int main(int argc, char **argv)
 {
   int main_return_code{EXIT_SUCCESS};
+
+  DedupliconListener listener;
+
   // Create deduplicon modules
   Hashtaroth hashtaroth;
   DaemonArch daemonarch;

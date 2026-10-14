@@ -21,5 +21,11 @@ namespace daemonarch
     daemonarch_event_type_t event_type;
   };
 
+
+
 } // namespace daemonarch
+
+std::ostream& operator<<(std::ostream&, const daemonarch::daemonarch_event_t&);
+
+std::ostream& operator<<(std::ostream&, const daemonarch::daemonarch_event_type_t&);
 #endif // DAEMONARCH_EVENT_HPP
