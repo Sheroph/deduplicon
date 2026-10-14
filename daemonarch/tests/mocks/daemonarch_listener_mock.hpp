@@ -18,20 +18,20 @@ namespace daemonarch::test::mock
     public:
     DaemonArchListenerMock();
 
-    void on_event(const daemon_arch_event_t&) override;
+    void on_event(const daemonarch_event_t&) override;
 
     size_t get_on_event_called_count() const;
 
     std::future<void> wait_for_on_event_call_count(const size_t);
 
-    std::vector<daemon_arch_event_t> get_on_event_call_params() const;
+    std::vector<daemonarch_event_t> get_on_event_call_params() const;
 
     protected:
       std::promise<void> wait_for_on_event_call_count_pro_;
       size_t expected_on_event_call_count_;
       bool expected_on_event_call_count_set_;
 
-      std::vector<daemon_arch_event_t> on_event_call_params_;
+      std::vector<daemonarch_event_t> on_event_call_params_;
   };
 
 } // namespace daemonarch::test::mock

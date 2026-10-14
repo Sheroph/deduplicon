@@ -7,7 +7,7 @@ struct inotify_event;
 
 namespace daemonarch
 {
-  bool translate(const inotify_event&, daemon_arch_event_type_t&);
+  bool translate(const inotify_event&, daemonarch_event_type_t&);
 } // namespace daemonarch
 
 #endif // EVENT_TRANSLATE_TOOLS_HPP

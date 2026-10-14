@@ -4,7 +4,7 @@
 namespace daemonarch
 {
 
-  struct daemon_arch_event_t;
+  struct daemonarch_event_t;
 
   class DaemonArchListener
   {
@@ -12,7 +12,7 @@ namespace daemonarch
   public:
     DaemonArchListener() {};
     virtual ~DaemonArchListener() {};
-    virtual void on_event(const daemon_arch_event_t &) = 0;
+    virtual void on_event(const daemonarch_event_t &) = 0;
   };
 
 } // namespace daemonarch

@@ -159,7 +159,7 @@ namespace daemonarch
       }
       if(bytes_read > 0)
       {
-        daemon_arch_event_t event;
+        daemonarch_event_t event;
         if(translate(os_event, event.event_type)) {
           event.path = watched_path_.at(os_event.wd);
           listeners_.at(os_event.wd).on_event(event);

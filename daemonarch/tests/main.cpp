@@ -80,7 +80,7 @@ TEST_F(DaemonArchTest, modified_notif_open_close)
 
   ASSERT_EQ(1, listener_mock->get_on_event_called_count());
 
-  ASSERT_EQ(daemon_arch_event_type_t::CLOSED, listener_mock->get_on_event_call_params()[0].event_type);
+  ASSERT_EQ(daemonarch_event_type_t::CLOSED, listener_mock->get_on_event_call_params()[0].event_type);
   ASSERT_EQ(temp_file.string(), listener_mock->get_on_event_call_params()[0].path);
 }
 
@@ -99,7 +99,7 @@ TEST_F(DaemonArchTest, modified_notif_delete)
 
   ASSERT_EQ(1, listener_mock->get_on_event_called_count());
 
-  ASSERT_EQ(daemon_arch_event_type_t::DELETE, listener_mock->get_on_event_call_params()[0].event_type);
+  ASSERT_EQ(daemonarch_event_type_t::DELETE, listener_mock->get_on_event_call_params()[0].event_type);
   ASSERT_EQ(temp_file.string(), listener_mock->get_on_event_call_params()[0].path);
 }
 TEST_F(DaemonArchTest, modified_notif_modify_close)
@@ -116,8 +116,8 @@ TEST_F(DaemonArchTest, modified_notif_modify_close)
 
   ASSERT_EQ(2, listener_mock->get_on_event_called_count());
 
-  ASSERT_EQ(daemon_arch_event_type_t::MODIFY, listener_mock->get_on_event_call_params()[0].event_type);
-  ASSERT_EQ(daemon_arch_event_type_t::CLOSED, listener_mock->get_on_event_call_params()[1].event_type);
+  ASSERT_EQ(daemonarch_event_type_t::MODIFY, listener_mock->get_on_event_call_params()[0].event_type);
+  ASSERT_EQ(daemonarch_event_type_t::CLOSED, listener_mock->get_on_event_call_params()[1].event_type);
   ASSERT_EQ(temp_file.string(), listener_mock->get_on_event_call_params()[0].path);
   ASSERT_EQ(temp_file.string(), listener_mock->get_on_event_call_params()[1].path);
 }

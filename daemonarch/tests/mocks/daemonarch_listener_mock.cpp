@@ -12,7 +12,7 @@ namespace daemonarch::test::mock
     expected_on_event_call_count_ = 0;
   }
 
-  void DaemonArchListenerMock::on_event(const daemon_arch_event_t& evt) {
+  void DaemonArchListenerMock::on_event(const daemonarch_event_t& evt) {
     on_event_call_params_.push_back(evt);
     if(expected_on_event_call_count_set_ && on_event_call_params_.size() >= expected_on_event_call_count_) {
       wait_for_on_event_call_count_pro_.set_value();
@@ -30,7 +30,7 @@ namespace daemonarch::test::mock
     return wait_for_on_event_call_count_pro_.get_future();
   }
 
-  vector<daemon_arch_event_t> DaemonArchListenerMock::get_on_event_call_params() const {
+  vector<daemonarch_event_t> DaemonArchListenerMock::get_on_event_call_params() const {
     return on_event_call_params_;
   }
 

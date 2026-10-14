@@ -9,7 +9,7 @@ using namespace std;
 
 namespace daemonarch
 {
-  bool translate(const inotify_event& src, daemon_arch_event_type_t& dst) {
+  bool translate(const inotify_event& src, daemonarch_event_type_t& dst) {
 
     if(src.mask & IN_MODIFY) {
       dst = MODIFY;

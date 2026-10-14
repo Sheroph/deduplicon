@@ -6,7 +6,7 @@
 namespace daemonarch
 {
 
-  enum daemon_arch_event_type_t
+  enum daemonarch_event_type_t
   {
     CLOSED,
     MODIFY,
@@ -15,10 +15,10 @@ namespace daemonarch
     NOT_DEFINED
   };
 
-  struct daemon_arch_event_t
+  struct daemonarch_event_t
   {
     std::string path;
-    daemon_arch_event_type_t event_type;
+    daemonarch_event_type_t event_type;
   };
 
 } // namespace daemonarch
