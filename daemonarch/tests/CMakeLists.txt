@@ -33,4 +33,4 @@ include(GoogleTest)
 
 target_link_libraries(${PROJECT_NAME} DAEMONARCH GTest::gtest_main)
 
-gtest_discover_tests(DAEMONARCH_TEST)
+gtest_discover_tests(${PROJECT_NAME})

@@ -25,4 +25,4 @@ include(GoogleTest)
 
 target_link_libraries(${PROJECT_NAME} HASHTAROTH GTest::gtest_main)
 
-gtest_discover_tests(HASHTAROTH_TEST)
+gtest_discover_tests(${PROJECT_NAME})

@@ -27,4 +27,4 @@ include(GoogleTest)
 
 target_link_libraries(${PROJECT_NAME} BEELZEBASE GTest::gtest_main)
 
-gtest_discover_tests(BEELZEBASE_TEST)
+gtest_discover_tests(${PROJECT_NAME})
