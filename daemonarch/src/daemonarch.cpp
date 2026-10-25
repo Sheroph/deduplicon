@@ -104,7 +104,6 @@ namespace daemonarch
     return true;
   }
 
-
   bool DaemonArch::inotify_initialized() const
   {
     return inotify_fd_ != -1;

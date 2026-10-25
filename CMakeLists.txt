@@ -8,6 +8,7 @@ set(BUILD_SHARED_LIBS ON)
 add_subdirectory(hashtaroth)
 add_subdirectory(beelzebase)
 add_subdirectory(daemonarch)
+add_subdirectory(bashazel)
 
 set(SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 set(INC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include)

@@ -7,12 +7,13 @@ Compilation tool used is `CMake` and C++ version is C++ 17
 
 ## Architecture
 
-`Deduplicon` is split into three parts: `daemonarch`, `hashtaroth` and `beelzebase`.
+`Deduplicon` is split into four parts: `daemonarch`, `hashtaroth`, `bashazel` and `beelzebase`.
 Each modules provide a service and are decoupled between them.
 
-The entry point of `deduplicon` is `daemonarch`, which monitor filesystem event on provided directory.
+The entry point of `deduplicon` is `bashazel`, a CLI tool to control `deduplicon` system.
+When started, `deduplicon` relies on `daemonarch` which monitor filesystem events on provided directory.
 On each event, it notifies `beelzebase`, which is reponsible to store and duplication status of monitored directory.
-`Beelzebase` can ask for file hashes to hashtaroth, which produces on demand hashes of files.
+`Beelzebase` can ask for file hashes to `hashtaroth`, which produces on demand hashes of files.
 
 Third parties dependencies are :
 - `openssl` use by module for hashing files
@@ -28,6 +29,10 @@ Hash computing is based upon openssl API.
 
 ### beelzebase
 Persistent recording part of `deduplicon`, its role is to store deplication status of monitored items (file, directories).
+
+### bashazel
+CLI of `deduplicon`, it provides commands such as start, stop, status, etc...
+Use `bashazel --help` to get more informations about available commands.
 
 ## Windows
 
